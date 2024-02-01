@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/RockPiMPU.dir/main.cpp.o  -o RockPiMPU  -pthread 
