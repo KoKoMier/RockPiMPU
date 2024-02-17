@@ -5,6 +5,6 @@ add_subdirectory(src)
 
 include_directories(./src/MPU6500)
 
-# target_link_libraries(RockPiMPU ${RPIM})
 add_executable(RockPiMPU "main.cpp")
+target_link_libraries(RockPiMPU ${RPIMPU})
 
