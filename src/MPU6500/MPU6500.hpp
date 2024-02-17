@@ -45,7 +45,9 @@
 #define FilterLPFPT1 0
 #define FilterLPFBiquad 1
 #define MPUTypeSPI 1
-#define PI 3.1415926
+#ifndef PI
+#define PI 3.14
+#endif
 #define MPU_250HZ_LPF_SPEED 8000.f
 #define DEG2RAD(x) (x * PI / 180.f)
 
