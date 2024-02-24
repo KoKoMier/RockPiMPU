@@ -164,12 +164,13 @@ struct MPUData
 class RPiMPU6500
 {
 public:
-    inline RPiMPU6500()
+    inline RPiMPU6500(MPUConfig mpuConfig)
     {
         struct timespec tv;
         clock_gettime(CLOCK_MONOTONIC, &tv);
         IMUstartuptime = (((tv.tv_sec * (uint64_t)1000000 + (tv.tv_nsec / 1000))));
         LastUpdate = GetTimestamp();
+        PrivateConfig = mpuConfig;
 
         PrivateData._uORB_MPU6500_IMUUpdateTime = GetTimestamp();
         // GyroDynmiacNotchMinBox = (PrivateConfig.DynamicNotchMinFreq / FFTResolution) - 1;
