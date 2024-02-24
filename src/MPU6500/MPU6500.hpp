@@ -298,16 +298,16 @@ public:
             IMUSensorsDataRead();
             switch (AccelCaliAction)
             {
-            case MPUAccelNoseUp:
-                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
-                break;
-            case MPUAccelNoseDown:
-                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
-                break;
             case MPUAccelNoseRight:
-                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_Y;
+                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
                 break;
             case MPUAccelNoseLeft:
+                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
+                break;
+            case MPUAccelNoseUp:
+                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_Y;
+                break;
+            case MPUAccelNoseDown:
                 AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_Y;
                 break;
             case MPUAccelNoseTop:
@@ -327,18 +327,18 @@ public:
             AccelCaliData[MPUAccelNoseLeft] /= 2000.f;
             AccelCaliData[MPUAccelNoseTop] /= 2000.f;
             AccelCaliData[MPUAccelNoseRev] /= 2000.f;
-            std::cout << "data-x-max:" << AccelCaliData[MPUAccelNoseUp] << "\r\n";
-            std::cout << "data-x-min:" << AccelCaliData[MPUAccelNoseDown] << "\r\n";
-            std::cout << "data-y-max:" << AccelCaliData[MPUAccelNoseRight] << "\r\n";
-            std::cout << "data-y-min:" << AccelCaliData[MPUAccelNoseLeft] << "\r\n";
+            std::cout << "data-x-max:" << AccelCaliData[MPUAccelNoseRight] << "\r\n";
+            std::cout << "data-x-min:" << AccelCaliData[MPUAccelNoseLeft] << "\r\n";
+            std::cout << "data-y-max:" << AccelCaliData[MPUAccelNoseUp] << "\r\n";
+            std::cout << "data-y-min:" << AccelCaliData[MPUAccelNoseDown] << "\r\n";
             std::cout << "data-z-max:" << AccelCaliData[MPUAccelNoseTop] << "\r\n";
             std::cout << "data-z-min:" << AccelCaliData[MPUAccelNoseRev] << "\r\n";
 
-            AccelCaliData[MPUAccelScalX] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseUp] - AccelCaliData[MPUAccelNoseDown]) / 2.f));
-            AccelCaliData[MPUAccelScalY] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseLeft] - AccelCaliData[MPUAccelNoseRight]) / 2.f));
+            AccelCaliData[MPUAccelScalY] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseUp] - AccelCaliData[MPUAccelNoseDown]) / 2.f));
+            AccelCaliData[MPUAccelScalX] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseLeft] - AccelCaliData[MPUAccelNoseRight]) / 2.f));
             AccelCaliData[MPUAccelScalZ] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseTop] - AccelCaliData[MPUAccelNoseRev]) / 2.f));
-            AccelCaliData[MPUAccelCaliX] = ((AccelCaliData[MPUAccelNoseUp] + AccelCaliData[MPUAccelNoseDown]) / 2.f) * AccelCaliData[MPUAccelScalX];
-            AccelCaliData[MPUAccelCaliY] = ((AccelCaliData[MPUAccelNoseRight] + AccelCaliData[MPUAccelNoseLeft]) / 2.f) * AccelCaliData[MPUAccelScalY];
+            AccelCaliData[MPUAccelCaliY] = ((AccelCaliData[MPUAccelNoseUp] + AccelCaliData[MPUAccelNoseDown]) / 2.f) * AccelCaliData[MPUAccelScalX];
+            AccelCaliData[MPUAccelCaliX] = ((AccelCaliData[MPUAccelNoseRight] + AccelCaliData[MPUAccelNoseLeft]) / 2.f) * AccelCaliData[MPUAccelScalY];
             AccelCaliData[MPUAccelCaliZ] = ((AccelCaliData[MPUAccelNoseTop] + AccelCaliData[MPUAccelNoseRev]) / 2.f) * AccelCaliData[MPUAccelScalZ];
         }
     }
@@ -354,7 +354,6 @@ public:
         PrivateData._uORB_MPU6500_A_X = PrivateData._uORB_MPU6500_A_X * PrivateData._flag_MPU6500_A_X_Scal - PrivateData._flag_MPU6500_A_X_Cali;
         PrivateData._uORB_MPU6500_A_Y = PrivateData._uORB_MPU6500_A_Y * PrivateData._flag_MPU6500_A_Y_Scal - PrivateData._flag_MPU6500_A_Y_Cali;
         PrivateData._uORB_MPU6500_A_Z = PrivateData._uORB_MPU6500_A_Z * PrivateData._flag_MPU6500_A_Z_Scal - PrivateData._flag_MPU6500_A_Z_Cali;
-
         //========================= //=========================Gyro Filter
         {
             switch (PrivateConfig.GyroFilterType)
@@ -363,14 +362,14 @@ public:
             {
                 if (PrivateConfig.GyroFilterCutOff)
                 {
-                    PrivateData._uORB_Gryo__Roll = pt1FilterApply(&GryoFilterLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
-                    PrivateData._uORB_Gryo_Pitch = pt1FilterApply(&GryoFilterLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo__Roll = pt1FilterApply(&GryoFilterLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo_Pitch = pt1FilterApply(&GryoFilterLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
                     PrivateData._uORB_Gryo___Yaw = pt1FilterApply(&GryoFilterLPF[GAZY], ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB));
                 }
                 else
                 {
-                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
-                    PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
                     PrivateData._uORB_Gryo___Yaw = ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB);
                 }
                 break;
@@ -379,15 +378,15 @@ public:
             {
                 if (PrivateConfig.GyroFilterCutOff)
                 {
-                    PrivateData._uORB_Gryo__Roll = biquadFilterApply(&GryoFilterBLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo__Roll = biquadFilterApply(&GryoFilterBLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
                     PrivateData._uORB_Gryo_Pitch = biquadFilterApply(&GryoFilterBLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
-                    PrivateData._uORB_Gryo___Yaw = biquadFilterApply(&GryoFilterBLPF[GAZY], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo___Yaw = biquadFilterApply(&GryoFilterBLPF[GAZY], ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB));
                 }
                 else
                 {
-                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
                     PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
-                    PrivateData._uORB_Gryo___Yaw = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo___Yaw = ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB);
                 }
             }
             break;
@@ -479,8 +478,8 @@ public:
                 PrivateData._uORB_MPU6500_A_Vector = sqrtf((PrivateData._uORB_MPU6500_ADF_X * PrivateData._uORB_MPU6500_ADF_X) +
                                                            (PrivateData._uORB_MPU6500_ADF_Y * PrivateData._uORB_MPU6500_ADF_Y) +
                                                            (PrivateData._uORB_MPU6500_ADF_Z * PrivateData._uORB_MPU6500_ADF_Z));
-                PrivateData._uORB_Accel_Pitch = -1 * atan2((float)PrivateData._uORB_MPU6500_ADF_X, PrivateData._uORB_MPU6500_ADF_Z) * 180.f / PI;
-                PrivateData._uORB_Accel__Roll = atan2((float)PrivateData._uORB_MPU6500_ADF_Y, PrivateData._uORB_MPU6500_ADF_Z) * 180.f / PI;
+                PrivateData._uORB_Accel__Roll = -1 * atan2((float)PrivateData._uORB_MPU6500_ADF_X, PrivateData._uORB_MPU6500_ADF_Z) * 180.f / PI;
+                PrivateData._uORB_Accel_Pitch = atan2((float)PrivateData._uORB_MPU6500_ADF_Y, PrivateData._uORB_MPU6500_ADF_Z) * 180.f / PI;
 
                 //========================= //=========================AHRS Update
                 {
@@ -650,7 +649,6 @@ private:
                     PrivateData._uORB_MPU6500_A_Y = Tmp_A2Y * cos(DEG2RAD((PrivateConfig.MPU_Flip__Roll))) + Tmp_A3Z * sin(DEG2RAD((180 + PrivateConfig.MPU_Flip__Roll)));
                     PrivateData._uORB_MPU6500_A_Z = Tmp_A3Z * cos(DEG2RAD((PrivateConfig.MPU_Flip__Roll))) + Tmp_A2Y * sin(DEG2RAD((PrivateConfig.MPU_Flip__Roll)));
                     PrivateData._uORB_MPU6500_A_X = Tmp_A3X;
-
                     //
                     PrivateData._uORB_MPU6500_AccelCountDown = 0;
                 }

@@ -1,0 +1,6 @@
+/home/cyh/FlightCode/RockPiMPU/build/CMakeFiles/rebuild_cache.dir
+/home/cyh/FlightCode/RockPiMPU/build/CMakeFiles/edit_cache.dir
+/home/cyh/FlightCode/RockPiMPU/build/CMakeFiles/RockPiMPU.dir
+/home/cyh/FlightCode/RockPiMPU/build/src/CMakeFiles/rebuild_cache.dir
+/home/cyh/FlightCode/RockPiMPU/build/src/CMakeFiles/edit_cache.dir
+/home/cyh/FlightCode/RockPiMPU/build/src/CMakeFiles/RPIMPU.dir
