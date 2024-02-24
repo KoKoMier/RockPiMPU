@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <unistd.h>
 #include <sys/time.h>
-#include "./src/MPU6500/MPU6500.hpp"
+#include "src/MPU6500/MPU6500.hpp"
 #include <fstream>
 #include "Drive_Json.hpp"
 
