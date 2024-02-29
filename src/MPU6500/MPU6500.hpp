@@ -648,6 +648,7 @@ private:
                     // Step 3: rotate Roll
                     PrivateData._uORB_MPU6500_A_Y = Tmp_A2Y * cos(DEG2RAD((PrivateConfig.MPU_Flip__Roll))) + Tmp_A3Z * sin(DEG2RAD((180 + PrivateConfig.MPU_Flip__Roll)));
                     PrivateData._uORB_MPU6500_A_Z = Tmp_A3Z * cos(DEG2RAD((PrivateConfig.MPU_Flip__Roll))) + Tmp_A2Y * sin(DEG2RAD((PrivateConfig.MPU_Flip__Roll)));
+
                     PrivateData._uORB_MPU6500_A_X = Tmp_A3X;
                     //
                     PrivateData._uORB_MPU6500_AccelCountDown = 0;

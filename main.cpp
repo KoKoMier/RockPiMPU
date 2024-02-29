@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
             option.MPUType = MPUTypeSPI;
             option.MPUSPIChannel = "/dev/spidev0.0";
             option.MPUI2CAddress = 0x68;
-            option.MPU_Flip_Pitch = 0;
+            option.MPU_Flip_Pitch = 180;
             option.MPU_Flip__Roll = 0;
-            option.MPU_Flip___Yaw = 0;
+            option.MPU_Flip___Yaw = 180;
             option.TargetFreqency = 1000;
             option.MPU6500_SPI_Freq = 400000;
             option.MPU_6500_LSB = 65.5 / 4;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
             option.AccTargetFreqency = 1000;
             option.AccelFilterCutOff = 30;
             option.AccelFilterNotchCutOff = 0;
-            std::cout<< "Start MPU Calibration\n";
+            std::cout << "Start MPU Calibration\n";
             RPiMPU6500 *myMPUTest = new RPiMPU6500(option);
             int a;
             double tmp[50];
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
             option.MPUSPIChannel = "/dev/spidev0.0";
             option.MPUI2CAddress = 0x68;
             option.MPU_Flip_Pitch = 0;
-            option.MPU_Flip__Roll = 0;
+            option.MPU_Flip__Roll = 180;
             option.MPU_Flip___Yaw = 0;
             option.TargetFreqency = 1000;
             option.MPU6500_SPI_Freq = 400000;
