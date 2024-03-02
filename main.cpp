@@ -41,7 +41,7 @@ inline int GetTimestamp()
 int main(int argc, char *argv[])
 {
     int argvs;
-    int TimeMax = 4000;
+    int TimeMax;
     MPUData myData;
 
     while ((argvs = getopt(argc, argv, "sgm")) != -1)
@@ -50,13 +50,14 @@ int main(int argc, char *argv[])
         {
         case 's':
         {
+            TimeMax = 500;
             MPUConfig option;
             option.MPUType = MPUTypeSPI;
             option.MPUSPIChannel = "/dev/spidev0.0";
             option.MPUI2CAddress = 0x68;
-            option.MPU_Flip_Pitch = 180;
-            option.MPU_Flip__Roll = 0;
-            option.MPU_Flip___Yaw = 180;
+            option.MPU_Flip_Pitch = 0;
+            option.MPU_Flip__Roll = 180;
+            option.MPU_Flip___Yaw = 270;
             option.TargetFreqency = 1000;
             option.MPU6500_SPI_Freq = 400000;
             option.MPU_6500_LSB = 65.5 / 4;
@@ -110,6 +111,7 @@ int main(int argc, char *argv[])
         break;
         case 'm':
         {
+            TimeMax = 1000;
             double AccelCaliData[30];
             MPUConfig option;
             option.MPUType = MPUTypeSPI;
@@ -117,7 +119,7 @@ int main(int argc, char *argv[])
             option.MPUI2CAddress = 0x68;
             option.MPU_Flip_Pitch = 0;
             option.MPU_Flip__Roll = 180;
-            option.MPU_Flip___Yaw = 0;
+            option.MPU_Flip___Yaw = 270;
             option.TargetFreqency = 1000;
             option.MPU6500_SPI_Freq = 400000;
             option.MPU_6500_LSB = 65.5 / 4;
@@ -144,6 +146,9 @@ int main(int argc, char *argv[])
             AccelCaliData[MPUAccelTRIMPitch] = 0;
             myMPUTest->MPUCalibration(AccelCaliData);
             std::cout << " Done!\n";
+            myData = myMPUTest->MPUSensorsDataGet();
+            sleep(2);
+            system("clear");
 
             while (true)
             {
