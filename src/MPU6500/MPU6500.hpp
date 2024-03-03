@@ -299,16 +299,16 @@ public:
             IMUSensorsDataRead();
             switch (AccelCaliAction)
             {
-            case MPUAccelNoseRight:
-                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
-                break;
-            case MPUAccelNoseLeft:
-                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
-                break;
             case MPUAccelNoseUp:
-                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_Y;
+                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
                 break;
             case MPUAccelNoseDown:
+                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_X;
+                break;
+            case MPUAccelNoseRight:
+                AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_Y;
+                break;
+            case MPUAccelNoseLeft:
                 AccelCaliData[AccelCaliAction] += PrivateData._uORB_MPU6500_A_Y;
                 break;
             case MPUAccelNoseTop:
@@ -329,18 +329,18 @@ public:
             AccelCaliData[MPUAccelNoseTop] /= 2000.f;
             AccelCaliData[MPUAccelNoseRev] /= 2000.f;
 
-            std::cout << "Data-X-Max:" << AccelCaliData[MPUAccelNoseRight] << "\r\n";
-            std::cout << "Data-X-Min:" << AccelCaliData[MPUAccelNoseLeft] << "\r\n";
-            std::cout << "Data-Y-Max:" << AccelCaliData[MPUAccelNoseUp] << "\r\n";
-            std::cout << "Data-Y-Min:" << AccelCaliData[MPUAccelNoseDown] << "\r\n";
+            std::cout << "Data-X-Max:" << AccelCaliData[MPUAccelNoseUp] << "\r\n";
+            std::cout << "Data-X-Min:" << AccelCaliData[MPUAccelNoseDown] << "\r\n";
+            std::cout << "Data-Y-Max:" << AccelCaliData[MPUAccelNoseLeft] << "\r\n";
+            std::cout << "Data-Y-Min:" << AccelCaliData[MPUAccelNoseRight] << "\r\n";
             std::cout << "Data-Z-Max:" << AccelCaliData[MPUAccelNoseTop] << "\r\n";
             std::cout << "Data-Z-Min:" << AccelCaliData[MPUAccelNoseRev] << "\r\n";
 
-            AccelCaliData[MPUAccelScalY] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseUp] - AccelCaliData[MPUAccelNoseDown]) / 2.f));
-            AccelCaliData[MPUAccelScalX] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseLeft] - AccelCaliData[MPUAccelNoseRight]) / 2.f));
+            AccelCaliData[MPUAccelScalX] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseUp] - AccelCaliData[MPUAccelNoseDown]) / 2.f));
+            AccelCaliData[MPUAccelScalY] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseLeft] - AccelCaliData[MPUAccelNoseRight]) / 2.f));
             AccelCaliData[MPUAccelScalZ] = std::abs(MPU6500_Accel_LSB / ((AccelCaliData[MPUAccelNoseTop] - AccelCaliData[MPUAccelNoseRev]) / 2.f));
-            AccelCaliData[MPUAccelCaliY] = ((AccelCaliData[MPUAccelNoseUp] + AccelCaliData[MPUAccelNoseDown]) / 2.f) * AccelCaliData[MPUAccelScalX];
-            AccelCaliData[MPUAccelCaliX] = ((AccelCaliData[MPUAccelNoseRight] + AccelCaliData[MPUAccelNoseLeft]) / 2.f) * AccelCaliData[MPUAccelScalY];
+            AccelCaliData[MPUAccelCaliX] = ((AccelCaliData[MPUAccelNoseUp] + AccelCaliData[MPUAccelNoseDown]) / 2.f) * AccelCaliData[MPUAccelScalX];
+            AccelCaliData[MPUAccelCaliY] = ((AccelCaliData[MPUAccelNoseRight] + AccelCaliData[MPUAccelNoseLeft]) / 2.f) * AccelCaliData[MPUAccelScalY];
             AccelCaliData[MPUAccelCaliZ] = ((AccelCaliData[MPUAccelNoseTop] + AccelCaliData[MPUAccelNoseRev]) / 2.f) * AccelCaliData[MPUAccelScalZ];
         }
     }
@@ -490,7 +490,7 @@ public:
 
             if ((PrivateData._uORB_MPU6500_A_Vector > (PrivateData._uORB_MPU6500_A_Static_Vector - MAX_ACC_NEARNESS)) &&
                 (PrivateData._uORB_MPU6500_A_Vector < (PrivateData._uORB_MPU6500_A_Static_Vector + MAX_ACC_NEARNESS)))
-                PrivateData.MPUMixTraditionBeta = 0.2;
+                PrivateData.MPUMixTraditionBeta = PrivateConfig.GyroToAccelBeta;
             else
                 PrivateData.MPUMixTraditionBeta = 0.f;
             if (!AHRSEnable)

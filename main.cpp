@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
             option.MPU6500_SPI_Freq = 400000;
             option.MPU_6500_LSB = 65.5 / 4;
             option.DynamicNotchEnable = true;
-            option.GyroToAccelBeta = 0.02;
+            option.GyroToAccelBeta = 0.2;
             option.GyroFilterNotchCutOff = 0;
             option.GyroFilterType = FilterLPFPT1;
             option.GyroFilterCutOff = 90;
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
             option.MPU6500_SPI_Freq = 400000;
             option.MPU_6500_LSB = 65.5 / 4;
             option.DynamicNotchEnable = true;
-            option.GyroToAccelBeta = 0.02;
+            option.GyroToAccelBeta = 0.2;
             option.GyroFilterNotchCutOff = 0;
             option.GyroFilterType = FilterLPFPT1;
             option.GyroFilterCutOff = 90;
