@@ -365,14 +365,14 @@ public:
             {
                 if (PrivateConfig.GyroFilterCutOff)
                 {
-                    PrivateData._uORB_Gryo__Roll = pt1FilterApply(&GryoFilterLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
-                    PrivateData._uORB_Gryo_Pitch = pt1FilterApply(&GryoFilterLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo__Roll = pt1FilterApply(&GryoFilterLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo_Pitch = pt1FilterApply(&GryoFilterLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
                     PrivateData._uORB_Gryo___Yaw = pt1FilterApply(&GryoFilterLPF[GAZY], ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB));
                 }
                 else
                 {
-                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
-                    PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
                     PrivateData._uORB_Gryo___Yaw = ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB);
                 }
                 break;
@@ -381,14 +381,14 @@ public:
             {
                 if (PrivateConfig.GyroFilterCutOff)
                 {
-                    PrivateData._uORB_Gryo__Roll = biquadFilterApply(&GryoFilterBLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
-                    PrivateData._uORB_Gryo_Pitch = biquadFilterApply(&GryoFilterBLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo__Roll = biquadFilterApply(&GryoFilterBLPF[GAXR], ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB));
+                    PrivateData._uORB_Gryo_Pitch = biquadFilterApply(&GryoFilterBLPF[GAYP], ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB));
                     PrivateData._uORB_Gryo___Yaw = biquadFilterApply(&GryoFilterBLPF[GAZY], ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB));
                 }
                 else
                 {
-                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
-                    PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo__Roll = ((float)PrivateData._uORB_MPU6500_G_X / PrivateConfig.MPU_6500_LSB);
+                    PrivateData._uORB_Gryo_Pitch = ((float)PrivateData._uORB_MPU6500_G_Y / PrivateConfig.MPU_6500_LSB);
                     PrivateData._uORB_Gryo___Yaw = ((float)PrivateData._uORB_MPU6500_G_Z / PrivateConfig.MPU_6500_LSB);
                 }
             }
