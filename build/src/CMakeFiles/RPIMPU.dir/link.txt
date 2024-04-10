@@ -1,0 +1,2 @@
+/usr/bin/ar qc libRPIMPU.a  CMakeFiles/RPIMPU.dir/MPU6500/MPU6500.cpp.o
+/usr/bin/ranlib libRPIMPU.a

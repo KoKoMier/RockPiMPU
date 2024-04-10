@@ -42,7 +42,7 @@ inline int GetTimestamp()
 int main(int argc, char *argv[])
 {
     int argvs;
-    int TimeMax = 4000;
+    int TimeMax;
     MPUData myData;
 
     while ((argvs = getopt(argc, argv, "sgmi")) != -1)
@@ -51,8 +51,30 @@ int main(int argc, char *argv[])
         {
         case 's':
         {
+            TimeMax = 500;
+            MPUConfig option;
+            option.MPUType = MPUTypeSPI;
+            option.MPUSPIChannel = "/dev/spidev0.0";
+            option.MPUI2CAddress = 0x68;
+            option.MPU_Flip_Pitch = 0;
+            option.MPU_Flip__Roll = 180;
+            option.MPU_Flip___Yaw = 270;
+            option.TargetFreqency = 1000;
+            option.MPU6500_SPI_Freq = 400000;
+            option.MPU_6500_LSB = 65.5 / 4;
+            option.DynamicNotchEnable = true;
+            option.GyroToAccelBeta = 0.2;
+            option.GyroFilterNotchCutOff = 0;
+            option.GyroFilterType = FilterLPFPT1;
+            option.GyroFilterCutOff = 90;
+            option.GyroFilterTypeST2 = FilterLPFPT1;
+            option.GyroFilterCutOffST2 = 0;
+            option.AccelFilterType = FilterLPFBiquad;
+            option.AccTargetFreqency = 1000;
+            option.AccelFilterCutOff = 30;
+            option.AccelFilterNotchCutOff = 0;
             std::cout << "Start MPU Calibration\n";
-            RPiMPU6500 *myMPUTest = new RPiMPU6500();
+            RPiMPU6500 *myMPUTest = new RPiMPU6500(option);
             int a;
             double tmp[50];
             std::cout << "start calibration Nose Up and Type int and enter:"
@@ -96,10 +118,31 @@ int main(int argc, char *argv[])
         break;
         case 'm':
         {
+            TimeMax = 1000;
             double AccelCaliData[30];
+            MPUConfig option;
+            option.MPUType = MPUTypeSPI;
+            option.MPUSPIChannel = "/dev/spidev0.0";
+            option.MPUI2CAddress = 0x68;
+            option.MPU_Flip_Pitch = 0;
+            option.MPU_Flip__Roll = 180;
+            option.MPU_Flip___Yaw = 270;
+            option.TargetFreqency = 1000;
+            option.MPU6500_SPI_Freq = 400000;
+            option.MPU_6500_LSB = 65.5 / 4;
+            option.DynamicNotchEnable = true;
+            option.GyroToAccelBeta = 0.2;
+            option.GyroFilterNotchCutOff = 0;
+            option.GyroFilterType = FilterLPFPT1;
+            option.GyroFilterCutOff = 90;
+            option.GyroFilterTypeST2 = FilterLPFPT1;
+            option.GyroFilterCutOffST2 = 0;
+            option.AccelFilterType = FilterLPFBiquad;
+            option.AccTargetFreqency = 1000;
+            option.AccelFilterCutOff = 30;
+            option.AccelFilterNotchCutOff = 0;
             std::cout << "Calibration Gryo ......";
-
-            RPiMPU6500 *myMPUTest = new RPiMPU6500();
+            RPiMPU6500 *myMPUTest = new RPiMPU6500(option);
             AccelCaliData[MPUAccelCaliX] = configSettle("./MPUCali.json", "_flag_MPU9250_A_X_Cali");
             AccelCaliData[MPUAccelCaliY] = configSettle("./MPUCali.json", "_flag_MPU9250_A_Y_Cali");
             AccelCaliData[MPUAccelCaliZ] = configSettle("./MPUCali.json", "_flag_MPU9250_A_Z_Cali");
@@ -110,6 +153,9 @@ int main(int argc, char *argv[])
             AccelCaliData[MPUAccelTRIMPitch] = 0;
             myMPUTest->MPUCalibration(AccelCaliData);
             std::cout << " Done!\n";
+            myData = myMPUTest->MPUSensorsDataGet();
+            sleep(2);
+            system("clear");
 
             while (true)
             {

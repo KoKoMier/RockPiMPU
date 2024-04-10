@@ -1,14 +1,8 @@
-set(MPUDriver "spidev" CACHE  INTERNAL "")
+cmake_minimum_required (VERSION 3.8)
+project (RPIMAIN)
 
-#CMake 最低版本要求
-cmake_minimum_required (VERSION 2.8)
+add_subdirectory(src)
 
-#项目信息
-project (Demo)
+add_executable(RockPiMPU "main.cpp")
+target_link_libraries(RockPiMPU ${RPIMPU})
 
-set(src_dir main.cpp )
-add_executable(RockPiMPU ${src_dir})
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-target_link_libraries(RockPiMPU PRIVATE Threads::Threads)

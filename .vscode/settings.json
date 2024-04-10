@@ -14,6 +14,10 @@
         "complex": "cpp",
         "concepts": "cpp",
         "condition_variable": "cpp",
+<<<<<<< HEAD
+=======
+        "cstdarg": "cpp",
+>>>>>>> 8cc7818e78d88e9a39ce48fb5742ac44aa46c4b0
         "cstddef": "cpp",
         "cstdint": "cpp",
         "cstdio": "cpp",
@@ -38,6 +42,10 @@
         "memory": "cpp",
         "memory_resource": "cpp",
         "numeric": "cpp",
+<<<<<<< HEAD
+=======
+        "optional": "cpp",
+>>>>>>> 8cc7818e78d88e9a39ce48fb5742ac44aa46c4b0
         "random": "cpp",
         "ratio": "cpp",
         "string_view": "cpp",
@@ -64,6 +72,11 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
         "valarray": "cpp"
+=======
+        "valarray": "cpp",
+        "*.inc": "cpp"
+>>>>>>> 8cc7818e78d88e9a39ce48fb5742ac44aa46c4b0
     }
 }
