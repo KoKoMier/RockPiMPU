@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include "src/MPU6500/MPU6500.hpp"
+#include "src/ICM20602/ICM20602.hpp"
 #include <fstream>
 #include "Drive_Json.hpp"
 
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
     int TimeMax = 4000;
     MPUData myData;
 
-    while ((argvs = getopt(argc, argv, "sgm")) != -1)
+    while ((argvs = getopt(argc, argv, "sgmi")) != -1)
     {
         switch (argvs)
         {
@@ -85,6 +86,12 @@ int main(int argc, char *argv[])
             configWrite("./MPUCali.json", "_flag_MPU9250_A_X_Scal", tmp[MPUAccelScalX]);
             configWrite("./MPUCali.json", "_flag_MPU9250_A_Y_Scal", tmp[MPUAccelScalY]);
             configWrite("./MPUCali.json", "_flag_MPU9250_A_Z_Scal", tmp[MPUAccelScalZ]);
+        }
+        break;
+        case 'i':
+        {
+            RPiICM20602 *myMPUTest = new RPiICM20602();
+
         }
         break;
         case 'm':

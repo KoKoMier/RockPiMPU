@@ -1,14 +1,14 @@
 #pragma once
 #include <iostream>
 #include "../SPI/LinuxSPI.hpp"
-#include "MadgwickAHRS.hpp"
+#include "../MadgwickAHRS.hpp"
 #include <chrono>
 #include <unistd.h>
 #include <iomanip>
 #include <cmath>
 #include <fstream>
 #include <time.h>
-#include "filter.h"
+#include "../filter.h"
 #include "../_thirdparty/eigen/Eigen/Dense"
 #include "../_thirdparty/eigen/Eigen/LU"
 
@@ -70,7 +70,7 @@ struct MPUConfig
     uint8_t MPUI2CAddress = 0x68;
     float MPU_Flip_Pitch = 0;
     float MPU_Flip__Roll = 0;
-    float MPU_Flip___Yaw = 0;
+    float MPU_Flip___Yaw = 270;
 
     int TargetFreqency = 1000;
 
@@ -518,6 +518,7 @@ public:
                     //
                     PrivateData._uORB_Real__Roll += PrivateData._flag_MPU6500_A_TR_Cali;
                     PrivateData._uORB_Real_Pitch += PrivateData._flag_MPU6500_A_TP_Cali;
+
                     //========================= //=========================Navigation update
                     {
                         if (PrivateData._uORB_MPU6500_AccelCountDown == 1)
@@ -639,7 +640,6 @@ private:
                     // Step 1: rotate Yaw
                     int Tmp_A2X = Tmp_AX * cos(DEG2RAD((PrivateConfig.MPU_Flip___Yaw))) + Tmp_AY * sin(DEG2RAD((PrivateConfig.MPU_Flip___Yaw)));
                     int Tmp_A2Y = Tmp_AY * cos(DEG2RAD((PrivateConfig.MPU_Flip___Yaw))) + Tmp_AX * sin(DEG2RAD((180 + PrivateConfig.MPU_Flip___Yaw)));
-
                     // Step 2: rotate Pitch
                     int Tmp_A3X = Tmp_A2X * cos(DEG2RAD(PrivateConfig.MPU_Flip_Pitch)) + Tmp_AZ * sin(DEG2RAD((PrivateConfig.MPU_Flip_Pitch)));
                     int Tmp_A3Z = Tmp_AZ * cos(DEG2RAD((PrivateConfig.MPU_Flip_Pitch))) + Tmp_A2X * sin(DEG2RAD((180 + PrivateConfig.MPU_Flip_Pitch)));
@@ -647,9 +647,10 @@ private:
                     PrivateData._uORB_MPU6500_A_Y = Tmp_A2Y * cos(DEG2RAD((PrivateConfig.MPU_Flip__Roll))) + Tmp_A3Z * sin(DEG2RAD((180 + PrivateConfig.MPU_Flip__Roll)));
                     PrivateData._uORB_MPU6500_A_Z = Tmp_A3Z * cos(DEG2RAD((PrivateConfig.MPU_Flip__Roll))) + Tmp_A2Y * sin(DEG2RAD((PrivateConfig.MPU_Flip__Roll)));
                     PrivateData._uORB_MPU6500_A_X = Tmp_A3X;
+                    
+                    PrivateData._uORB_MPU6500_AccelCountDown = 0;
 
                     //
-                    PrivateData._uORB_MPU6500_AccelCountDown = 0;
                 }
                 PrivateData._uORB_MPU6500_AccelCountDown++;
                 {
