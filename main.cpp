@@ -114,6 +114,11 @@ int main(int argc, char *argv[])
         {
             ICMConfig option;
             RPiICM20602 *myICMTest = new RPiICM20602(option);
+            while (true)
+            {
+                myData = myICMTest->MPUSensorsDataGet();
+                usleep(5000); 
+            }
         }
         break;
         case 'm':
