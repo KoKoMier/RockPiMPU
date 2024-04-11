@@ -4,9 +4,9 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include "src/MPU6500/MPU6500.hpp"
-#include "src/ICM20602/ICM20602.hpp"
 #include <fstream>
 #include "Drive_Json.hpp"
+#include "src/ICM20602/ICM20602.hpp"
 
 int TimestartUpLoad = 0;
 
@@ -112,8 +112,8 @@ int main(int argc, char *argv[])
         break;
         case 'i':
         {
-            RPiICM20602 *myMPUTest = new RPiICM20602();
-
+            ICMConfig option;
+            RPiICM20602 *myICMTest = new RPiICM20602(option);
         }
         break;
         case 'm':

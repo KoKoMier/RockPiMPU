@@ -30,7 +30,7 @@ struct ICMConfig
 class RPiICM20602
 {
 public:
-    inline RPiICM20602()
+    inline RPiICM20602(ICMConfig mpuConfig)
     {
         IMUSensorsDeviceInit();
 
