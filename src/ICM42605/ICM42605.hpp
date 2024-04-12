@@ -44,7 +44,7 @@ struct ICM4Config
 class RPiICM42605
 {
 public:
-    inline RPiICM42605(ICMConfig mpuConfig)
+    inline RPiICM42605(ICM4Config mpuConfig)
     {
         struct timespec tv;
         clock_gettime(CLOCK_MONOTONIC, &tv);
@@ -54,12 +54,12 @@ public:
 
     }
 
-    inline ICMData ICMSensorsDataGet()
-    {
-        IMUSensorsDataRead();
+    // inline ICMData ICMSensorsDataGet()
+    // {
+    //     IMUSensorsDataRead();
 
-        // return PrivateData;
-    }
+    //     // return PrivateData;
+    // }
 
 private:
     inline void IMUSensorsDeviceInit()
@@ -73,38 +73,38 @@ private:
             uint8_t ICM60602_SPI_Config_WHOAMI[2] = {0xf5, 0x00};
             _s_spiXfer(ICM20602_fd, ICM60602_SPI_Config_WHOAMI, ICM60602_SPI_Config_WHOAMI, PrivateConfig.ICM60602_SPI_Freq, 2);
             PrivateData.DeviceType = ICM60602_SPI_Config_WHOAMI[1];
-
-            uint8_t ICM60602_SPI_Config_RESET[2] = {0x6b, 0x80};
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET, PrivateConfig.ICM60602_SPI_Freq, 2); // reset
-            usleep(500);
-            uint8_t ICM60602_SPI_Config_RESET2[2] = {0x68, 0x03};
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET2, PrivateConfig.ICM60602_SPI_Freq, 2); // BIT_ACC | BIT_TEMP reset
-            usleep(500);
-            uint8_t ICM60602_SPI_Config_RESET3[2] = {0x6b, 0x00};
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET3, PrivateConfig.ICM60602_SPI_Freq, 2); // reset
-            usleep(500);
-            uint8_t ICM60602_SPI_Config_RESET4[2] = {0x6b, 0x01};
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET4, PrivateConfig.ICM60602_SPI_Freq, 2); // reset
-            usleep(1000);
-            uint8_t ICM60602_SPI_Config_RESET5[2] = {0X6C, 0x00};
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET4, PrivateConfig.ICM60602_SPI_Freq, 2); //  acc | gyro on
-            usleep(1000);
-
-
-            uint8_t ICM60602_SPI_Config_ALPF[2] = {0x1d, 0x00};                                   // FChoice 1, DLPF 3 , dlpf cut off 44.8hz for accel is 0x03, but now 0x00 is not apply accel hardware
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_ALPF, PrivateConfig.ICM60602_SPI_Freq, 2); // Accel2
-            usleep(15);
-            uint8_t ICM60602_SPI_Config_Acce[2] = {0x1c, 0x18};                                   // Full AccelScale +- 16g
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_Acce, PrivateConfig.ICM60602_SPI_Freq, 2); // Accel
-            usleep(15);
-            uint8_t ICM60602_SPI_Config_Gyro[2] = {0x1b, 0x18};                                   // Full GyroScale +-2000dps, dlpf 250hz
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_Gyro, PrivateConfig.ICM60602_SPI_Freq, 2); // Gryo
-            usleep(15);
+            // std::cout << "PrivateData.DeviceType: " << static_cast<int>(PrivateData.DeviceType) << std::endl;
+            // uint8_t ICM60602_SPI_Config_RESET[2] = {0x6b, 0x80};
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET, PrivateConfig.ICM60602_SPI_Freq, 2); // reset
+            // usleep(500);
+            // uint8_t ICM60602_SPI_Config_RESET2[2] = {0x68, 0x03};
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET2, PrivateConfig.ICM60602_SPI_Freq, 2); // BIT_ACC | BIT_TEMP reset
+            // usleep(500);
+            // uint8_t ICM60602_SPI_Config_RESET3[2] = {0x6b, 0x00};
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET3, PrivateConfig.ICM60602_SPI_Freq, 2); // reset
+            // usleep(500);
+            // uint8_t ICM60602_SPI_Config_RESET4[2] = {0x6b, 0x01};
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET4, PrivateConfig.ICM60602_SPI_Freq, 2); // reset
+            // usleep(1000);
+            // uint8_t ICM60602_SPI_Config_RESET5[2] = {0X6C, 0x00};
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_RESET4, PrivateConfig.ICM60602_SPI_Freq, 2); //  acc | gyro on
+            // usleep(1000);
 
 
-            uint8_t ICM60602_SPI_Config_GLPF[2] = {0x1a, 0x00};                                   // DLPF_CFG is 000 , with Gyro dlpf is 250hz
-            _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_GLPF, PrivateConfig.ICM60602_SPI_Freq, 2); // config
-            usleep(15);
+            // uint8_t ICM60602_SPI_Config_ALPF[2] = {0x1d, 0x00};                                   // FChoice 1, DLPF 3 , dlpf cut off 44.8hz for accel is 0x03, but now 0x00 is not apply accel hardware
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_ALPF, PrivateConfig.ICM60602_SPI_Freq, 2); // Accel2
+            // usleep(15);
+            // uint8_t ICM60602_SPI_Config_Acce[2] = {0x1c, 0x18};                                   // Full AccelScale +- 16g
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_Acce, PrivateConfig.ICM60602_SPI_Freq, 2); // Accel
+            // usleep(15);
+            // uint8_t ICM60602_SPI_Config_Gyro[2] = {0x1b, 0x18};                                   // Full GyroScale +-2000dps, dlpf 250hz
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_Gyro, PrivateConfig.ICM60602_SPI_Freq, 2); // Gryo
+            // usleep(15);
+
+
+            // uint8_t ICM60602_SPI_Config_GLPF[2] = {0x1a, 0x00};                                   // DLPF_CFG is 000 , with Gyro dlpf is 250hz
+            // _s_spiWrite(ICM20602_fd, ICM60602_SPI_Config_GLPF, PrivateConfig.ICM60602_SPI_Freq, 2); // config
+            // usleep(15);
 
             // uint8_t MPU6500_SPI_Config_INTC[2] = {0x37, 0x22};
             // _s_spiWrite(ICM20602_fd, MPU6500_SPI_Config_INTC, PrivateConfig.MPU6500_SPI_Freq, 2);

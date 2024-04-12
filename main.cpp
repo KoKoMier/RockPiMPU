@@ -174,8 +174,11 @@ int main(int argc, char *argv[])
         break;
         case 'I':
         {
-            
+            ICM4Config option;
+            RPiICM42605 *myICM4Test = new RPiICM42605(option);
+
         }
+        break;
         case 'i':
         {
             ICMConfig option;
