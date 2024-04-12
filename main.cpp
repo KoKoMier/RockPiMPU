@@ -7,6 +7,7 @@
 #include <fstream>
 #include "Drive_Json.hpp"
 #include "src/ICM20602/ICM20602.hpp"
+#include "src/ICM42605/ICM42605.hpp"
 
 int TimestartUpLoad = 0;
 
@@ -44,8 +45,9 @@ int main(int argc, char *argv[])
     int argvs;
     int TimeMax;
     MPUData myData;
+    ICMData myICMData;
 
-    while ((argvs = getopt(argc, argv, "sgmi")) != -1)
+    while ((argvs = getopt(argc, argv, "sgmicIC")) != -1)
     {
         switch (argvs)
         {
@@ -110,14 +112,124 @@ int main(int argc, char *argv[])
             configWrite("./MPUCali.json", "_flag_MPU9250_A_Z_Scal", tmp[MPUAccelScalZ]);
         }
         break;
+        case 'c':
+        {
+            TimeMax = 500;
+            ICMConfig option;
+            option.ICMType = ICMTypeSPI;
+            option.ICMSPIChannel = "/dev/spidev0.0";
+            option.ICM_Flip_Pitch = 0;
+            option.ICM_Flip__Roll = 180;
+            option.ICM_Flip___Yaw = 270;
+            option.TargetFreqency = 1000;
+            option.ICM20602_SPI_Freq = 400000;
+            option.ICM_20602_LSB = 65.5 / 4;
+            option.DynamicNotchEnable = true;
+            option.GyroToAccelBeta = 0.2;
+            option.GyroFilterNotchCutOff = 0;
+            option.GyroFilterType = FilterLPFPT1;
+            option.GyroFilterCutOff = 90;
+            option.GyroFilterTypeST2 = FilterLPFPT1;
+            option.GyroFilterCutOffST2 = 0;
+            option.AccelFilterType = FilterLPFBiquad;
+            option.AccTargetFreqency = 1000;
+            option.AccelFilterCutOff = 30;
+            option.AccelFilterNotchCutOff = 0;
+            std::cout << "Start ICM Calibration\n";
+            RPiICM20602 *myICMTest = new RPiICM20602(option);
+            int a;
+            double tmp[50];
+            std::cout << "start calibration Nose Up and Type int and enter:"
+                      << " \n";
+            std::cin >> a;
+            myICMTest->ICMAccelCalibration(ICMAccelNoseUp, tmp);
+            std::cout << "start calibration Nose Down and Type int and enter:"
+                      << " \n";
+            std::cin >> a;
+            myICMTest->ICMAccelCalibration(ICMAccelNoseDown, tmp);
+            std::cout << "start calibration Nose Right Up and Type int and enter:"
+                      << " \n";
+            std::cin >> a;
+            myICMTest->ICMAccelCalibration(ICMAccelNoseRight, tmp);
+            std::cout << "start calibration Nose Left Up and Type int and enter:"
+                      << " \n";
+            std::cin >> a;
+            myICMTest->ICMAccelCalibration(ICMAccelNoseLeft, tmp);
+            std::cout << "start calibration Nose Top  and Type int and enter:"
+                      << " \n";
+            std::cin >> a;
+            myICMTest->ICMAccelCalibration(ICMAccelNoseTop, tmp);
+            std::cout << "start calibration Nose Rev and Type int and enter:"
+                      << " \n";
+            std::cin >> a;
+            myICMTest->ICMAccelCalibration(ICMAccelNoseRev, tmp);
+            myICMTest->ICMAccelCalibration(ICMAccelCaliGet, tmp);
+            configWrite("./ICMCali.json", "_flag_ICM20602_A_X_Cali", tmp[ICMAccelCaliX]);
+            configWrite("./ICMCali.json", "_flag_ICM20602_A_Y_Cali", tmp[ICMAccelCaliY]);
+            configWrite("./ICMCali.json", "_flag_ICM20602_A_Z_Cali", tmp[ICMAccelCaliZ]);
+            configWrite("./ICMCali.json", "_flag_ICM20602_A_X_Scal", tmp[ICMAccelScalX]);
+            configWrite("./ICMCali.json", "_flag_ICM20602_A_Y_Scal", tmp[ICMAccelScalY]);
+            configWrite("./ICMCali.json", "_flag_ICM20602_A_Z_Scal", tmp[ICMAccelScalZ]);
+        }
+        break;
+        case 'I':
+        {
+            
+        }
         case 'i':
         {
             ICMConfig option;
+            option.ICMType = ICMTypeSPI;
+            option.ICMSPIChannel = "/dev/spidev0.0";
+            option.ICM_Flip_Pitch = 0;
+            option.ICM_Flip__Roll = 180;
+            option.ICM_Flip___Yaw = 270;
+            option.TargetFreqency = 1000;
+            option.ICM20602_SPI_Freq = 400000;
+            option.ICM_20602_LSB = 65.5 / 4;
+            option.DynamicNotchEnable = true;
+            option.GyroToAccelBeta = 0.2;
+            option.GyroFilterNotchCutOff = 0;
+            option.GyroFilterType = FilterLPFPT1;
+            option.GyroFilterCutOff = 90;
+            option.GyroFilterTypeST2 = FilterLPFPT1;
+            option.GyroFilterCutOffST2 = 0;
+            option.AccelFilterType = FilterLPFBiquad;
+            option.AccTargetFreqency = 1000;
+            option.AccelFilterCutOff = 30;
+            option.AccelFilterNotchCutOff = 0;
+            double AccelCaliData[30];
             RPiICM20602 *myICMTest = new RPiICM20602(option);
+            AccelCaliData[ICMAccelCaliX] = configSettle("./ICMCali.json", "_flag_ICM20602_A_X_Cali");
+            AccelCaliData[ICMAccelCaliY] = configSettle("./ICMCali.json", "_flag_ICM20602_A_Y_Cali");
+            AccelCaliData[ICMAccelCaliZ] = configSettle("./ICMCali.json", "_flag_ICM20602_A_Z_Cali");
+            AccelCaliData[ICMAccelScalX] = configSettle("./ICMCali.json", "_flag_ICM20602_A_X_Scal");
+            AccelCaliData[ICMAccelScalY] = configSettle("./ICMCali.json", "_flag_ICM20602_A_Y_Scal");
+            AccelCaliData[ICMAccelScalZ] = configSettle("./ICMCali.json", "_flag_ICM20602_A_Z_Scal");
+            AccelCaliData[ICMAccelTRIM_Roll] = 0;
+            AccelCaliData[ICMAccelTRIMPitch] = 0;
+            myICMTest->ICMCalibration(AccelCaliData);
+            std::cout << " Done!\n";
+            myICMData = myICMTest->ICMSensorsDataGet();
+            sleep(2);
+            system("clear");
+            
             while (true)
             {
-                myData = myICMTest->MPUSensorsDataGet();
-                usleep(5000); 
+                myICMData = myICMTest->ICMSensorsDataGet();
+                usleep(5000);
+                std::cout << "\033[20A";
+                std::cout << "\033[K";
+                std::cout << "Accel Roll: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Accel__Roll << "|"
+                          << "AccelPitch: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Accel_Pitch << "| \n";
+                std::cout << "ACC       X: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_ICM20602_A_X << "|"
+                          << "ACC       Y: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_ICM20602_A_Y << "|"
+                          << "ACC       Z: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_ICM20602_A_Z << "| \n";
+                std::cout << "Gryo  Roll: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Gryo__Roll << "|"
+                          << "Gryo Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Gryo_Pitch << "|"
+                          << "Gryo   Yaw: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Gryo___Yaw << "| \n";
+                std::cout << "Real  Roll: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Real__Roll << "|"
+                          << "Real Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Real_Pitch << "| \n"; 
             }
         }
         break;
