@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
     int TimeMax;
     MPUData myData;
     ICMData myICMData;
+    ICM4Data myICM4Data;
 
     while ((argvs = getopt(argc, argv, "sgmicIC")) != -1)
     {
@@ -172,13 +173,64 @@ int main(int argc, char *argv[])
             configWrite("./ICMCali.json", "_flag_ICM20602_A_Z_Scal", tmp[ICMAccelScalZ]);
         }
         break;
+
         case 'I':
         {
             ICM4Config option;
+            option.ICMType = ICMTypeSPI;
+            option.ICMSPIChannel = "/dev/spidev0.0";
+            option.ICM_Flip_Pitch = 0;
+            option.ICM_Flip__Roll = 180;
+            option.ICM_Flip___Yaw = 270;
+            option.TargetFreqency = 1000;
+            option.ICM42605_SPI_Freq = 400000;
+            option.ICM_42605_LSB = 65.5 / 4;
+            option.DynamicNotchEnable = true;
+            option.GyroToAccelBeta = 0.2;
+            option.GyroFilterNotchCutOff = 0;
+            option.GyroFilterType = FilterLPFPT1;
+            option.GyroFilterCutOff = 90;
+            option.GyroFilterTypeST2 = FilterLPFPT1;
+            option.GyroFilterCutOffST2 = 0;
+            option.AccelFilterType = FilterLPFBiquad;
+            option.AccTargetFreqency = 1000;
+            option.AccelFilterCutOff = 30;
+            option.AccelFilterNotchCutOff = 0;
+            double AccelCaliData[30];
             RPiICM42605 *myICM4Test = new RPiICM42605(option);
-
+            // AccelCaliData[ICMAccelCaliX] = configSettle("./ICMCali.json", "_flag_ICM42605_A_X_Cali");
+            // AccelCaliData[ICMAccelCaliY] = configSettle("./ICMCali.json", "_flag_ICM42605_A_Y_Cali");
+            // AccelCaliData[ICMAccelCaliZ] = configSettle("./ICMCali.json", "_flag_ICM42605_A_Z_Cali");
+            // AccelCaliData[ICMAccelScalX] = configSettle("./ICMCali.json", "_flag_ICM42605_A_X_Scal");
+            // AccelCaliData[ICMAccelScalY] = configSettle("./ICMCali.json", "_flag_ICM42605_A_Y_Scal");
+            // AccelCaliData[ICMAccelScalZ] = configSettle("./ICMCali.json", "_flag_ICM42605_A_Z_Scal");
+            // AccelCaliData[ICMAccelTRIM_Roll] = 0;
+            // AccelCaliData[ICMAccelTRIMPitch] = 0;
+            myICM4Test->ICMCalibration(AccelCaliData);
+            std::cout << " Done!\n";
+            myICM4Data = myICM4Test->ICMSensorsDataGet();
+            sleep(2);
+            system("clear");
+            while (true)
+            {
+                myICM4Data = myICM4Test->ICMSensorsDataGet();
+                usleep(5000);
+                std::cout << "\033[20A";
+                std::cout << "\033[K";
+                std::cout << "Accel Roll: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Accel__Roll << "|"
+                          << "AccelPitch: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Accel_Pitch << "| \n";
+                std::cout << "ACC       X: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_ICM42605_A_X << "|"
+                          << "ACC       Y: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_ICM42605_A_Y << "|"
+                          << "ACC       Z: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_ICM42605_A_Z << "| \n";
+                std::cout << "Gryo  Roll: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Gryo__Roll << "|"
+                          << "Gryo Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Gryo_Pitch << "|"
+                          << "Gryo   Yaw: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Gryo___Yaw << "| \n";
+                std::cout << "Real  Roll: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Real__Roll << "|"
+                          << "Real Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICM4Data._uORB_Real_Pitch << "| \n";
+            }
         }
         break;
+
         case 'i':
         {
             ICMConfig option;
@@ -216,7 +268,7 @@ int main(int argc, char *argv[])
             myICMData = myICMTest->ICMSensorsDataGet();
             sleep(2);
             system("clear");
-            
+
             while (true)
             {
                 myICMData = myICMTest->ICMSensorsDataGet();
@@ -232,7 +284,7 @@ int main(int argc, char *argv[])
                           << "Gryo Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Gryo_Pitch << "|"
                           << "Gryo   Yaw: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Gryo___Yaw << "| \n";
                 std::cout << "Real  Roll: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Real__Roll << "|"
-                          << "Real Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Real_Pitch << "| \n"; 
+                          << "Real Pitch: " << std::setw(7) << std::setfill(' ') << (int)myICMData._uORB_Real_Pitch << "| \n";
             }
         }
         break;
