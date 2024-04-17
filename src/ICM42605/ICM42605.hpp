@@ -95,7 +95,7 @@ private:
             _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF4, PrivateConfig.ICM42605_SPI_Freq, 2); // Stream-to-FIFO Mode
             usleep(500); 
             uint8_t ICM42605_SPI_Config_CONF5[2] = {0xe5, 0x00}; 
-            _s_spiXfer(ICM42605_fd, ICM42605_SPI_Config_CONF5, ICM42605_SPI_Config_RESET7, PrivateConfig.ICM42605_SPI_Freq, 2);
+            _s_spiXfer(ICM42605_fd, ICM42605_SPI_Config_CONF5, ICM42605_SPI_Config_CONF5, PrivateConfig.ICM42605_SPI_Freq, 2);
             usleep(500); 
             uint8_t ICM42605_SPI_Config_CONF6[2] = {0x60, 0x00}; 
             _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF6, PrivateConfig.ICM42605_SPI_Freq, 2); // watermark
@@ -106,41 +106,49 @@ private:
             uint8_t ICM42605_SPI_Config_CONF8[2] = {0x65, ICM42605_SPI_Config_CONF5[1]}; 
             _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF8, PrivateConfig.ICM42605_SPI_Freq, 2); 
             usleep(500);     
-            uint8_t ICM42605_SPI_Config_CONF9[2] = {0x65, }; 
+            uint8_t ICM42605_SPI_Config_CONF9[2] = {0x5f,0x63}; 
             _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF9, PrivateConfig.ICM42605_SPI_Freq, 2); 
             usleep(500);    
-            // uint8_t ICM42605_SPI_Config_RESET3[2] = {0x6b, 0x00};
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_RESET3, PrivateConfig.ICM42605_SPI_Freq, 2); // reset
-            // usleep(500);
-            // uint8_t ICM42605_SPI_Config_RESET4[2] = {0x6b, 0x01};
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_RESET4, PrivateConfig.ICM42605_SPI_Freq, 2); // reset
-            // usleep(1000);
-            // uint8_t ICM42605_SPI_Config_RESET5[2] = {0X6C, 0x00};
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_RESET4, PrivateConfig.ICM42605_SPI_Freq, 2); //  acc | gyro on
-            // usleep(1000);
+            uint8_t ICM42605_SPI_Config_CONF10[2] = {0x5f,0x63}; 
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF10, PrivateConfig.ICM42605_SPI_Freq, 2); // Enable the accel and gyro to the FIFO
+            usleep(500);    
 
 
-            // uint8_t ICM42605_SPI_Config_ALPF[2] = {0x1d, 0x00};                                   // FChoice 1, DLPF 3 , dlpf cut off 44.8hz for accel is 0x03, but now 0x00 is not apply accel hardware
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_ALPF, PrivateConfig.ICM42605_SPI_Freq, 2); // Accel2
-            // usleep(15);
-            // uint8_t ICM42605_SPI_Config_Acce[2] = {0x1c, 0x18};                                   // Full AccelScale +- 16g
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_Acce, PrivateConfig.ICM42605_SPI_Freq, 2); // Accel
-            // usleep(15);
-            // uint8_t ICM42605_SPI_Config_Gyro[2] = {0x1b, 0x18};                                   // Full GyroScale +-2000dps, dlpf 250hz
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_Gyro, PrivateConfig.ICM42605_SPI_Freq, 2); // Gryo
-            // usleep(15);
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF3, PrivateConfig.ICM42605_SPI_Freq, 2); // bank0
+            usleep(500); 
+            uint8_t ICM42605_SPI_Config_CONF11[2] = {0x14,0x36}; 
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF11, PrivateConfig.ICM42605_SPI_Freq, 2); 
+            usleep(500);        
+
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF3, PrivateConfig.ICM42605_SPI_Freq, 2); // bank0
+            usleep(500); 
+            uint8_t ICM42605_SPI_Config_CON12[2] = {0xe5, 0x00}; 
+            _s_spiXfer(ICM42605_fd, ICM42605_SPI_Config_CON12, ICM42605_SPI_Config_CON12, PrivateConfig.ICM42605_SPI_Freq, 2);
+            usleep(500);       
+            ICM42605_SPI_Config_CON12[1] |= (1 << 2); //FIFO_THS_INT1_ENABLE   
+            uint8_t ICM42605_SPI_Config_CONF13[2] = {0x65,ICM42605_SPI_Config_CON12[1]}; 
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF11, PrivateConfig.ICM42605_SPI_Freq, 2); 
+            usleep(500);        
+
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF3, PrivateConfig.ICM42605_SPI_Freq, 2); // bank0
+            usleep(500); 
+            uint8_t ICM42605_SPI_Config_Accel[2] = {0x50,0x0f}; 
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_Accel, PrivateConfig.ICM42605_SPI_Freq, 2); // 16g || 500hz lp 
+            usleep(500);  
+
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF3, PrivateConfig.ICM42605_SPI_Freq, 2); // bank0
+            usleep(500); 
+            uint8_t ICM42605_SPI_Config_Gyro[2] = {0x4f,0x0f}; 
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_Gyro, PrivateConfig.ICM42605_SPI_Freq, 2); // 2000dps || 2khz
+            usleep(500);  
 
 
-            // uint8_t ICM42605_SPI_Config_GLPF[2] = {0x1a, 0x00};                                   // DLPF_CFG is 000 , with Gyro dlpf is 250hz
-            // _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_GLPF, PrivateConfig.ICM42605_SPI_Freq, 2); // config
-            // usleep(15);
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_CONF3, PrivateConfig.ICM42605_SPI_Freq, 2); // bank0
+            usleep(500); 
+            uint8_t ICM42605_SPI_Config_Tem[2] = {0x4e,0x0f}; 
+            _s_spiWrite(ICM42605_fd, ICM42605_SPI_Config_Tem, PrivateConfig.ICM42605_SPI_Freq, 2); // Accel on in LNM ||  Gyro on in LNM
+            usleep(500);  
 
-            // uint8_t MPU6500_SPI_Config_INTC[2] = {0x37, 0x22};
-            // _s_spiWrite(ICM42605_fd, MPU6500_SPI_Config_INTC, PrivateConfig.MPU6500_SPI_Freq, 2);
-            // usleep(500);
-            // uint8_t MPU6500_SPI_Config_INTE[2] = {0x38, 0x01};
-            // _s_spiWrite(ICM42605_fd, MPU6500_SPI_Config_INTE, PrivateConfig.MPU6500_SPI_Freq, 2);
-            // usleep(500);
         }
         else if (PrivateConfig.MPUType == MPUTypeI2C)
         {
